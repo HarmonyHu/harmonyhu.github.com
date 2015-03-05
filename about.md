@@ -1,6 +1,6 @@
 ---
 layout: default
-title: About Vinit Kumar
+title: About HarmonyHu
 ---
 
-Your introduction here
+Email: harmonyhu@gmail.com
