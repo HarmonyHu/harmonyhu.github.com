@@ -1,10 +1,10 @@
-name: White Paper
+name: HarmonyHu'Blog
 markdown: redcarpet
 pygments: true
-url: http://vinitkumar.me/white-paper
+url: http://harmonyhu.com
 paginate: 8
-description:     Jekyll theme for Programmers
-intro: White Paper is a Jekyll theme most suited to be used on tech blogs that like their content to shine.
+description:     HarmonyHu's Blog
+intro: Welcome to HarmonyHu's blog!
 logo:             logo.png
 disqus_shortname:
 # url: http://gotchacode.com
