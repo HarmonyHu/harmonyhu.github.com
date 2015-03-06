@@ -24,19 +24,19 @@ categories:
 ##域名绑定  
 经过同学介绍，域名在[GoDaddy](https://www.godaddy.com/)上购买，可以用支付宝，很方便。在想`域名`上花了一些时间，起初打算用自己的名字，最后还是用了自己的网名HarmonyHu(我姓胡，我想做一个与内外和谐的人)。最后怎么把`harmonyhu.com`和`harmonyhu.github.io`花了一些时间，网上还没有详细的教程，所以我就来写一个。
 首先在GoDaddy网上，在`My Domains`页面选择`Domain Details`，如下图:  
-![](images/godaddy1.png)  
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/godaddy1.jpg)  
   
   
 然后选择`DNS ZONE FILE`，如下图：  
-![](images/godaddy2.png)  
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/godaddy2.jpg)  
   
   
 然后填写`A(Host)`和`CName(Alias)`信息，如下图：  
-![](images/godaddy3.png)  
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/godaddy3.jpg)  
 上图中的ip地址可以在[GitHub Pages Help](https://help.github.com/articles/tips-for-configuring-an-a-record-with-your-dns-provider/)找到。  
 
 最后在[GitHub](https://github.com/)的对应工程根路径加入CNAME文件，并且内容填上`harmonyhu.com`，如下图：  
-![](images/github1.jpg)
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/github1.jpg)
   
 这样就大功告成了。
 
