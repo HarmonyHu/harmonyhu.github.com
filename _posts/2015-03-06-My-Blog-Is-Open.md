@@ -5,9 +5,10 @@ date: 2015-03-06
 comments: true
 categories:
 ---
-近来浏览一些技术性文章，发现大神们都有属于自己的独立域名博客，对大神的专业表示敬畏的同时，也质疑：搞个独立域名博客很难吗？我是一个喜欢研究新东西的人，于是决定自己也整一个出来。  
+近来浏览一些技术性文章，发现大神们都有属于自己的独立域名博客，对大神的专业表示敬畏的同时，也很好奇：搞个独立域名博客很难吗？我是一个喜欢研究新东西的人，于是决定自己也试试整一个出来。  
+  
 ......  
- 
+  
 于是就整出来了：<http://www.harmonyhu.com>  
 
 ##过程
@@ -21,7 +22,7 @@ categories:
 这个过程又学习了不少新东西，也成功搭建起了github pages博客<http://harmonyhu.github.io>  
 
 ##域名绑定  
-经过同学介绍，域名在[GoDaddy](https://www.godaddy.com/)上购买，可以用支付宝，很方便。在想`域名`上花了一些时间，起初打算用自己的名字，最后还是用了自己的网名HarmonyHu(我姓胡，我想做一个与内外和谐的人)。最后怎么把`harmonyhu.com`和`harmonyhu.github.io`花了一些时间，网上还没有详细的教程，所以我就来写一个。
+经过同学介绍，域名在[GoDaddy](https://www.godaddy.com/)上购买，可以用支付宝，很方便。在想`域名`上花了一些时间，起初打算用自己的名字，最后还是用了自己的网名HarmonyHu(我姓胡，我想做一个与内外和谐的人)。最后怎么把`harmonyhu.com`绑定到`harmonyhu.github.io`花了一些时间，网上还没有详细的教程，所以我就来写一个。
 首先在GoDaddy网上，在`My Domains`页面选择`Domain Details`，如下图:  
 ![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/godaddy1.jpg)  
   
