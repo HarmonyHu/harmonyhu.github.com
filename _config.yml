@@ -5,7 +5,7 @@ url: http://harmonyhu.com
 paginate: 8
 description: HarmonyHu's Blog
 intro: Welcome to HarmonyHu's Blog
-logo: https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/logo.gif
+logo: https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/logo.jpg
 disqus_shortname:
 # url: http://gotchacode.com
 #Comment out url when working locally to resolve base urls correctly
