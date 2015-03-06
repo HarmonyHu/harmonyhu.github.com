@@ -5,12 +5,12 @@ date: 2015-03-06
 comments: true
 categories:
 ---
-![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/logo.gif)  
+ 
 近来浏览一些技术性文章，发现大神们都有属于自己的独立域名博客，对大神的专业表示敬畏的同时，也很好奇：搞个独立域名博客很难吗？我是一个喜欢研究新东西的人，于是决定自己也试试整一个出来。  
   
 ......  
   
-于是就整出来了：<http://www.harmonyhu.com>  
+于是就整出来了：<http://harmonyhu.com>  
 
 ##过程
 当然这整个过程并非简单，我也并非聪明人，能够这么顺利全靠互联网，具体的说，是靠互联网上各个乐于分享的人们。这里我整个过程参考的链接也罗列出来，希望也能帮到一些人。  
