@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "我的独立域名博客开通了"
-date: 2015-03-06
-comments: true
+title:  我的独立域名博客开通了
+date:   2015-03-06
+summary:
 categories:
 ---
  
