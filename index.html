@@ -11,7 +11,7 @@ layout: default
           <h3 class="h3 post-title">{{ post.title }}</h3>
 		</a>
 		<p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
-		<p>{{ post.excerpt }}</p>
+		<p>{{ post.excerpt | strip_html | strip_newlines | truncate:170 }}</p>
         <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
           <h6>查看全文</h6>
 		</a>
