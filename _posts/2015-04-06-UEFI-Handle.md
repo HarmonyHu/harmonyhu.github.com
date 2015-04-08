@@ -1,12 +1,11 @@
 ---
 layout: post
 title:  UEFI小结-Handle的来龙去脉
-date:   2015-04-03
+date:   2015-04-06
 summary:
 categories:
 ---
 *(本文最初是2010-11-18发表于[BiosRen论坛](http://www.biosren.com/thread-3440-1-1.html),现在挪到本人自己的域名博客)*  
-
 本文说明：本人刚学习UEFI不久，写该文一是为了将学到的东西做一个规范化的总结，二是为了给初学UEFI的兄弟起到借鉴作用。同样地，错误的地方肯定很多，还望能得到各位弟兄指正。要理解本文，您至少应该是读过UEFI Spec，不然请先阅读UEFI Spec。  
 
 ##一、一些概念的理解  
@@ -19,19 +18,19 @@ UEFI中会有很多抽象概念，像service、protocol、handle等等，如果�
 
 接着本文重点说明handle。
        
-##二、`EFI_HANDLE`的定义  
+##二、EFI_HANDLE的定义  
 
-EFI_HANDLE定义是这样的：`typedef void * EFI_HANDLE`。void * 用C语言来理解为不确定类型。它真正的类型是这样定义的（`EDK\Foundation\Core\Dxe\Hand\Hand.h`）：  
-```  
-typedef struct {  
-    UINTN            Signature;  
-    EFI_LIST_ENTRY   AllHandles;  
-    EFI_LIST_ENTRY   Protocols;  
-    UINTN            LocateRequest;  
-    UINT64           Key;  
-} IHANDLE;  
-```  
-比如定义一个变量`EFI_HANDLE hExample`，当你将它作为参数传递给service的时候，在service内部是这样使用它的：`IHANDLE * Handle=(IHANDLE*)hExample`。也就是说IHANDLE*才是handle的本来面目。为什么要弄的这么复杂呢？一是为了抽象以隐藏细节，二可能是为了安全。  
+EFI\_HANDLE定义是这样的： typedef void \* EFI\_HANDLE。void \*用C语言来理解为不确定类型。它真正的类型是这样定义的(EDK\Foundation\Core\Dxe\Hand\Hand.h):  
+  
+    typedef struct {  
+      UINTN            Signature;  
+      EFI_LIST_ENTRY   AllHandles;  
+      EFI_LIST_ENTRY   Protocols;  
+      UINTN            LocateRequest;  
+      UINT64           Key;  
+    } IHANDLE;  
+
+比如定义一个变量`EFI_HANDLE hExample`，当你将它作为参数传递给service的时候，在service内部是这样使用它的：`IHANDLE * Handle=(IHANDLE*)hExample`。也就是说IHANDLE\*才是handle的本来面目。为什么要弄的这么复杂呢？一是为了抽象以隐藏细节，二可能是为了安全。  
         
 ##三、关于`EFI_LIST_ENTRY`  
 
