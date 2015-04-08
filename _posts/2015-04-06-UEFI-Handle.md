@@ -21,26 +21,26 @@ UEFI中会有很多抽象概念，像service、protocol、handle等等，如果�
 ##二、EFI_HANDLE的定义  
 
 EFI\_HANDLE定义是这样的： typedef void \* EFI\_HANDLE。void \*用C语言来理解为不确定类型。它真正的类型是这样定义的(EDK\Foundation\Core\Dxe\Hand\Hand.h):  
-  
-    typedef struct {  
-      UINTN            Signature;  
-      EFI_LIST_ENTRY   AllHandles;  
-      EFI_LIST_ENTRY   Protocols;  
-      UINTN            LocateRequest;  
-      UINT64           Key;  
-    } IHANDLE;  
-
+```
+typedef struct {  
+  UINTN            Signature;  
+  EFI_LIST_ENTRY   AllHandles;  
+  EFI_LIST_ENTRY   Protocols;  
+  UINTN            LocateRequest;  
+  UINT64           Key;  
+} IHANDLE;  
+```
 比如定义一个变量`EFI_HANDLE hExample`，当你将它作为参数传递给service的时候，在service内部是这样使用它的：`IHANDLE * Handle=(IHANDLE*)hExample`。也就是说IHANDLE\*才是handle的本来面目。为什么要弄的这么复杂呢？一是为了抽象以隐藏细节，二可能是为了安全。  
         
 ##三、关于`EFI_LIST_ENTRY`  
 
-要明白IHANDLE这个结构体，就要明白`EFI_LIST_ENTRY`是如何被使用的。`EFI_LIST_ENTRY`定义如下（`EDK\Foundation\Library\Dxe\Include\LinkedList.h`）：  
-```  
+要明白IHANDLE这个结构体，就要明白`EFI_LIST_ENTRY`是如何被使用的。`EFI_LIST_ENTRY`定义如下（`EDK\Foundation\Library\Dxe\Include\LinkedList.h`）： 
+```
 typedef struct _EFI_LIST_ENTRY {  
   struct    _EFI_LIST_ENTRY    *ForwardLink;  
   struct    _EFI_LIST_ENTRY    *BackLink;  
 } EFI_LIST_ENTRY;  
-```  
+```
 大家立刻就会反应到，它用于实现双向链表。但是与一般的链表实现方式不一样，它纯粹是`EFI_LIST_ENTRY`这个成员的链接，而不用在乎这个成员所在的结构体。一般的链表要求结点之间的类型一致，而这种链表只要求结构体存在`EFI_LIST_ENTRY`这个成员就够了。比如说`IHANDLE *handle1,*handle2;`初始化后， `handle1->AllHandles->ForwardLink=handle2->AllHandles; handle2->AllHandles->BackLink=handle1->AllHandles`。这样handle1与handle2的AllHandles就链接到了一起。但是这样就只能进行AllHandles的遍历了，怎么样遍历IHANLE实例呢？。这时候就要用到`_CR`宏，`_CR`宏的定义如下：  
 ```  
  #define _CR(Record, TYPE, Field)  ((TYPE *) ((CHAR8 *) (Record) - (CHAR8 *) &(((TYPE *) 0)->Field)))  
