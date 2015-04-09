@@ -66,15 +66,15 @@ typedef struct _EFI_LIST_ENTRY {
 
 ```  
 typedef struct {  
-  UINTN     Signature;  
-  EFI_HANDLE    Handle;     // Back pointer  
-  EFI_LIST_ENTRY    Link;     // Link on IHANDLE.Protocols  
-  EFI_LIST_ENTRY     ByProtocol; // Link on PROTOCOL_ENTRY.Protocols  
-  PROTOCOL_ENTRY    *Protocol;   // The protocol ID  
-  VOID    *   Interface; // The interface value   
-  EFI_LIST_ENTRY    OpenList;    // OPEN_PROTOCOL_DATA list.  
-  UINTN    OpenListCount;  
-  EFI_HANDLE    ControllerHandle;  
+  UINTN           Signature;  
+  EFI_HANDLE      Handle;     //Back pointer  
+  EFI_LIST_ENTRY  Link;       //Link on IHANDLE.Protocols  
+  EFI_LIST_ENTRY  ByProtocol; //Link on PROTOCOL_ENTRY.Protocols  
+  PROTOCOL_ENTRY *Protocol;   //The protocol ID  
+  VOID           *Interface;  //The interface value   
+  EFI_LIST_ENTRY  OpenList;   //OPEN_PROTOCOL_DATA list.  
+  UINTN           OpenListCount;  
+  EFI_HANDLE      ControllerHandle;  
 } PROTOCOL_INTERFACE;  
 ```  
 
@@ -85,12 +85,12 @@ Driver会为handle添加多个protocol实例，这些实例也是链表的形式
 
 ```  
 typedef struct {
-  UINTN     Signature;  
-  EFI_LIST_ENTRY    Link;  
-  EFI_HANDLE     AgentHandle;  
-  EFI_HANDLE    ControllerHandle;  
-  UINT32      Attributes;  
-  UINT32        OpenCount;  
+  UINTN           Signature;  
+  EFI_LIST_ENTRY  Link;  
+  EFI_HANDLE      AgentHandle;  
+  EFI_HANDLE      ControllerHandle;  
+  UINT32          Attributes;  
+  UINT32          OpenCount;  
 } OPEN_PROTOCOL_DATA;  
 ```  
 
@@ -137,11 +137,11 @@ typedef struct {
 ```  
 EFI_STATUS  
 CoreInstallProtocolInterfaceNotify (  
-IN OUT EFI_HANDLE   *UserHandle,  
-IN EFI_GUID    *Protocol,  
-IN EFI_INTERFACE_TYPE    InterfaceType,  
-IN VOID     *Interface,  
-IN BOOLEAN   Notify  
+  IN OUT EFI_HANDLE   *UserHandle,  
+  IN EFI_GUID    *Protocol,  
+  IN EFI_INTERFACE_TYPE    InterfaceType,  
+  IN VOID     *Interface,  
+  IN BOOLEAN   Notify  
 )  
 ```  
 
@@ -149,7 +149,7 @@ IN BOOLEAN   Notify
 代码就不贴了，请直接对照EDK中的代码，从`handle.c`找到CoreInstallProtocolInterfaceNotify这个函数，想必这个文件大家都有。  
 同学们，老师要开始讲课了，翻到394行，我念一句，你们跟一句。（呵呵，开玩笑的，哪当得起哦）  
 462行用`CoreHandleProtocol(...)`检索链表1，查看UserHandle是否已存在于handle database中。  
-476行用`CoreFindProtocolEntry(...)`检索链表4，查看GUID是否已经存在于链表中，若不存在在创建一个以参数Protocol为GUID的PROTOCOL_ENTRY实例PortEntry插入链表4中。  
+476行用`CoreFindProtocolEntry(...)`检索链表4，查看GUID是否已经存在于链表中，若不存在在创建一个以参数Protocol为GUID的`PROTOCOL_ENTRY`实例PortEntry插入链表4中。  
 493行露出`EFI_HANDLE`的本质了，它是`(IHANDLE*)`。  
 494行到518行为创建一个handle及初始化它的过程，看仔细了，对理解handle很有用。初始化后就插入到链表1中。  
 533行到554行，对新创建的`PROTOCOL_INTERFACE`实例Prot进行初始化，对照链表结构库看仔细了，尤其是各种指针的去向（参数Interface挂接到了Prot下面）。初始化后将Port插入到链表2中。  
