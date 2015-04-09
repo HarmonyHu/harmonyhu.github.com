@@ -118,6 +118,7 @@ typedef struct {
 ![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/Handle3.jpg)  
 
 恕我唠叨：  
+
 *   图中1表示以gHandleList为头空结点，以`EFI_HANDLE`实例的AllHandle成员为后续成员结点的环形双向链表；
 *   图中2表示以`EFI_HANDLE`实例中Protocols成员为头空结点，以`PROTOCOL_INTERFACE`实例的Link成员为后续成员结点的环形双向链表；
 *   图中3表示以`PROTOCOL_INTERFACE`实例中的OpenList成员为头空结点，以`OPEN_PROTOCOL_DATA`实例的Link成员为后续成员结点的环形双向链表（篇幅原因省略一部分）。
@@ -152,6 +153,7 @@ CoreInstallProtocolInterfaceNotify (
 对比与UEFI spec中InstallProtocolInterface的定义，CoreInstallProtocolInterfaceNotify中的Notify为TRUE。这个service的作用就是：当UserHandle为空时，就向handle database中插入新的handle，并且将参数中的Interface所指定的protocol加载到这个handle上面；当UserHandle不为空，就在`handle database`中找到这个handle，在将这个protocol加载上去。如果通过上面的链表图，你已经想象到了它是如何运作的，那么下文就已经多余了。  
 代码就不贴了，请直接对照EDK中的代码，从`handle.c`找到CoreInstallProtocolInterfaceNotify这个函数，想必这个文件大家都有。  
 同学们，老师要开始讲课了，翻到394行，我念一句，你们跟一句。（呵呵，开玩笑的，哪当得起哦）  
+
 +   462行用`CoreHandleProtocol(...)`检索链表1，查看UserHandle是否已存在于`handle database`中。  
 +   476行用`CoreFindProtocolEntry(...)`检索链表4，查看GUID是否已经存在于链表中，若不存在在创建一个以参数Protocol为GUID的`PROTOCOL_ENTRY`实例ProtEntry插入链表4中。  
 +   493行露出`EFI_HANDLE`的本质了，它是`(IHANDLE*)`。  
