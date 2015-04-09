@@ -21,6 +21,7 @@ UEFI中会有很多抽象概念，像service、protocol、handle等等，如果�
 ##二、EFI_HANDLE的定义  
 
 EFI\_HANDLE定义是这样的： typedef void \* EFI\_HANDLE。void \*用C语言来理解为不确定类型。它真正的类型是这样定义的(EDK\Foundation\Core\Dxe\Hand\Hand.h):  
+
 ```
 typedef struct {  
   UINTN            Signature;  
@@ -30,20 +31,24 @@ typedef struct {
   UINT64           Key;  
 } IHANDLE;  
 ```
+
 比如定义一个变量`EFI_HANDLE hExample`，当你将它作为参数传递给service的时候，在service内部是这样使用它的：`IHANDLE * Handle=(IHANDLE*)hExample`。也就是说IHANDLE\*才是handle的本来面目。为什么要弄的这么复杂呢？一是为了抽象以隐藏细节，二可能是为了安全。  
         
 ##三、关于`EFI_LIST_ENTRY`  
 
-要明白IHANDLE这个结构体，就要明白`EFI_LIST_ENTRY`是如何被使用的。`EFI_LIST_ENTRY`定义如下（`EDK\Foundation\Library\Dxe\Include\LinkedList.h`）： 
+要明白IHANDLE这个结构体，就要明白`EFI_LIST_ENTRY`是如何被使用的。`EFI_LIST_ENTRY`定义如下（`EDK\Foundation\Library\Dxe\Include\LinkedList.h`):  
+
 ```
 typedef struct _EFI_LIST_ENTRY {  
   struct    _EFI_LIST_ENTRY    *ForwardLink;  
   struct    _EFI_LIST_ENTRY    *BackLink;  
 } EFI_LIST_ENTRY;  
-```
+```  
+
 大家立刻就会反应到，它用于实现双向链表。但是与一般的链表实现方式不一样，它纯粹是`EFI_LIST_ENTRY`这个成员的链接，而不用在乎这个成员所在的结构体。一般的链表要求结点之间的类型一致，而这种链表只要求结构体存在`EFI_LIST_ENTRY`这个成员就够了。比如说`IHANDLE *handle1,*handle2;`初始化后， `handle1->AllHandles->ForwardLink=handle2->AllHandles; handle2->AllHandles->BackLink=handle1->AllHandles`。这样handle1与handle2的AllHandles就链接到了一起。但是这样就只能进行AllHandles的遍历了，怎么样遍历IHANLE实例呢？。这时候就要用到`_CR`宏，`_CR`宏的定义如下：  
 ```  
- #define _CR(Record, TYPE, Field)  ((TYPE *) ((CHAR8 *) (Record) - (CHAR8 *) &(((TYPE *) 0)->Field)))  
+ #define _CR(Record, TYPE, Field)  \
+                    ((TYPE *) ((CHAR8 *) (Record) - (CHAR8 *) &(((TYPE *) 0)->Field)))  
 ```  
 这个宏可以通过结构体实例的成员访问到实例本身，它的原理可以参见
 <http://www.biosren.com/thread-1407-1-1.html>或者<http://blog.csdn.net/hgf1011/archive/2009/10/06/4635888.aspx>  
@@ -58,6 +63,7 @@ typedef struct _EFI_LIST_ENTRY {
      
 ####（2）由IHANDLE中Protocols引出的链表
 再来关注IHANDLE中的Protocols这个成员，它又是指向何方？它指向以`PROTOCOL_INTERFACE`这个结构体实例。`PROTOCOL_INTERFACE`定义如下：  
+
 ```  
 typedef struct {  
   UINTN     Signature;  
@@ -71,10 +77,12 @@ typedef struct {
   EFI_HANDLE    ControllerHandle;  
 } PROTOCOL_INTERFACE;  
 ```  
+
 Driver会为handle添加多个protocol实例，这些实例也是链表的形式存在。`PROTOCOL_INTERFACE`的link用于连接以IHANDLE为空头结点以`PPOTOCOL_INTERFACE`为后续结点的链表。这个结构体又牵扯出更多的`EFI_LIST_ENTRY`。成员中Handle指向头空结点的这个handle，Protocol指向`PROTOCOL_ENTRY`这个结构体实例，这个实例存在于另一个链表中，称之为`Protocol Database`。后面再说这个`Protocol Database`。先说OpenList引出的链表。
      
 ####（3）由`PROTOCOL_INTERFACE`中OpenList引出的链表
 注释中已经说明OpenList引出`OPEN_PROTOCOL_DATA list`。`OPEN_PROTOCOL_DATA`定义如下：  
+
 ```  
 typedef struct {
   UINTN     Signature;  
@@ -85,19 +93,22 @@ typedef struct {
   UINT32        OpenCount;  
 } OPEN_PROTOCOL_DATA;  
 ```  
+
 看到这个结构体就应该想到这个链表的模型了，不多说。看到只有一个`EFI_LIST_ENTRY`，松了一口气，这条线路上的链表总算是到头了。  
         
 ####（4）链表`Protocol Database`  
 `PROTOCOL_ENTRY`的定义如下：  
+
 ```  
 typedef struct {  
-  UINTN    Signature;  
+  UINTN             Signature;  
   EFI_LIST_ENTRY    AllEntries;   // All entries  
-  EFI_GUID    ProtocolID;    // ID of the protocol  
+  EFI_GUID          ProtocolID;   // ID of the protocol  
   EFI_LIST_ENTRY    Protocols;    // All protocol interfaces  
-  EFI_LIST_ENTRY     Notify;      // Registerd notification handlers  
+  EFI_LIST_ENTRY    Notify;       // Registerd notification handlers  
 } PROTOCOL_ENTRY;  
 ```  
+
 这个链表也有个头空结点，定义为：`EFI_LIST_ENTRY  mProtocolDatabase`。这个链表通过AllEntries这个成员来链接。这里又有几个`EFI_LIST_ENTRE`，这意味着又有好几个链表。这样大家的脑子里可能就乱了。为了对这些链表有清晰的认识，下面是用visio画的简图，省略部分结构体成员，为了不出现飞线，结构体成员位置也挪动了一下。（此图画起来好不容易，我也要署名，呵呵）。  
 
      
@@ -121,7 +132,8 @@ typedef struct {
          
 ##五、以InstallProtocolInterface为例来看handle的内部运作
 有了上面的准备后，我就以InstallProtocolInterface这个service来讲述handle的内部运作了。
-经过一番顺藤摸瓜后，就会发现InstallProtocolInterface最终的形式是（`EDK\Foundation\Core\Dxe\Hand\Handle.c`）：  
+经过一番顺藤摸瓜后，就会发现InstallProtocolInterface最终的形式是(`EDK\Foundation\Core\Dxe\Hand\Handle.c`):  
+
 ```  
 EFI_STATUS  
 CoreInstallProtocolInterfaceNotify (  
@@ -132,6 +144,7 @@ IN VOID     *Interface,
 IN BOOLEAN   Notify  
 )  
 ```  
+
 对比与UEFI spec中InstallProtocolInterface的定义，CoreInstallProtocolInterfaceNotify中的Notify为TRUE。这个service的作用就是：当UserHandle为空时，就向handle database中插入新的handle，并且将参数中的Interface所指定的protocol加载到这个handle上面；当UserHandle不为空，就在`handle database`中找到这个handle，在将这个protocol加载上去。如果通过上面的链表图，你已经想象到了它是如何运作的，那么下文就已经多余了。  
 代码就不贴了，请直接对照EDK中的代码，从`handle.c`找到CoreInstallProtocolInterfaceNotify这个函数，想必这个文件大家都有。  
 同学们，老师要开始讲课了，翻到394行，我念一句，你们跟一句。（呵呵，开玩笑的，哪当得起哦）  
