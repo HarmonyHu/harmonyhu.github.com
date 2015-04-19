@@ -20,7 +20,7 @@ categories:
 这里要说的是Intel构架下的CPU地址空间布局，注意这里没有说是内存地址空间布局。我们说的内存通常是指DRAM，DRAM相对于CPU也可以算是外部设备，CPU地址空间是CPU访问外部设备过程中的一个概念，CPU除了访问DRAM外还会访问许多其他的设备。可以粗略的认为CPU地址空间包含DRAM地址空间，但两者却是不同的概念。而且DRAM地址空间是由内存控制器直接访问的，由CPU间接访问的。
 过去很长一段时间Intel CPU是32位的，也就是可以访问到4GB的地址空间，但是当时的DRAM通常也就是512MB到2GB之间，现在假设DRAM是1GB，那么就是3GB的地址空间是空的。在计算机里面，地址也是资源。这空的地址空间就用来访问外部设备IO所用，这部分被称为MMIO（Memory Mapped I/O)。MMIO的空间是很大的，它包含了PCI的配置空间(256MB或者更大)，内置集成显存(256MB,或者更大)，还有其他很多东西 。所以这部分的大小是不容忽视的。
 现在的Intel CPU一般都是36位的，也就是可以访问到64GB。而DRAM也是越来越大，以至于DRAM加上MMIO的空间超出了4GB，而MMIO的空间是不能随意变更的。所以现在的做法就是将DRAM的一部分重映射到4GB以上的空间，下面就以DRAM有5GB为情况，做一个例子。请看下图：  
-![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/address_space.jpg)
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/address_space1.jpg)
 
 
 上图中左边是地址空间，右边是DRAM空间，其中红色的字体表示寄存器，可以在spec中找到该寄存器的说明，这几个寄存器决定了整个地址空间的大的格局。这里就简要说明一下。  
