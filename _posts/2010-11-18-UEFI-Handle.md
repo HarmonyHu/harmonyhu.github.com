@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  UEFI小结-Handle的来龙去脉
+title:  UEFI Handle的来龙去脉
 date:   2010-11-18
 summary:
 categories:

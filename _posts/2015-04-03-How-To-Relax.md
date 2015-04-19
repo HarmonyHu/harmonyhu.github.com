@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  读书心得——如何活得轻松自在
+title:  读书心得: 如何活得轻松自在
 date:   2015-04-03
 summary:
 categories:

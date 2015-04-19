@@ -12,7 +12,7 @@ categories:
 另外我非常感谢LightSeed的“肢解BIOS 系列”，它为像我这样的新人提供了循序渐进的道路。我很希望自己也能够起到这样的作用。
 再就是，不出意外，我也会成为BIOS领域的高手的！！！嘻嘻。  
 
-本文说明：本人也只是刚入门，写该文一方面为了总结刚学到的知识，另一方面希望能够为其他兄弟们起到借鉴作用。大部分内容都是从spec中获取的，但spec上有些没有的内容就是凭借自己的经验和猜测了，所以错误的地方肯定不在少数。若有发现，请您指正。要阅读本文，您可能需要一份intel北桥的datasheet或者spec，基本上随便从intel官网上下载一份北桥datasheet就行了，比如说这份 Intel(R) 4 Series Chipset Family Datasheet。要验证一些内容，您可能需要用到RW软件。
+本文说明：本人也只是刚入门，写该文一方面为了总结刚学到的知识，另一方面希望能够为其他兄弟们起到借鉴作用。大部分内容都是从spec中获取的，但spec上有些没有的内容就是凭借自己的经验和猜测了，所以错误的地方肯定不在少数。若有发现，请您指正。要阅读本文，您可能需要一份intel北桥的datasheet或者spec，基本上随便从intel官网上下载一份北桥datasheet就行了，比如说这份`Intel(R) 4 Series Chipset Family Datasheet`。要验证一些内容，您可能需要用到RW软件。
 
 
 ##一、地址空间映射
@@ -49,12 +49,12 @@ TOUUD，36位地址，大小为REMAPLIMIT+1的位置，比如上图TOUUD应该�
 
 另外我也将我所了解的情况说明一下。  
 
-1. 先看TOLUD-4GB的位置，可以看到有几处都是DMI Interface(Subtractive Decode)。DMI是南桥与北桥的接口，访问DMI，也就是访问南桥。另外要解释的是Substactive decode，在计算机中地址译码有三种形式，当主设备通过指定地址访问总线上的从设备，一个是Positive decode，有从设备解码后发现是访问自己的，于是它就会响应，否则就没有从设备响应；一个是Negative decode，从设备收到该地址经解码后发现不属于自己的地址范围，从设备就转发出去；一个是Subtractive decode，在4个时钟周期内没有从设备响应，该地址就会发送到扩展的总线上面解码。DMI Interface(Subtractive Decode)的意思就是CPU发送一地址先到北桥上解码，如果该地址没有北桥上的设备占用，那么就用该地址就会被传送到南桥上解码，，也就是访问南桥上的设备。可以假想为一开始4GB空间都是DMI Interface（Subtractive Decode），然后0-TOLUD被DRAM声明占用，TOLUD-4GB也纷纷被各种设备占用，于是就剩下了支离破碎的几个DMI Interface。(目前看上去这样理解是通顺的，但我希望它也是正确的)。  
+1.先看TOLUD-4GB的位置，可以看到有几处都是DMI Interface(Subtractive Decode)。DMI是南桥与北桥的接口，访问DMI，也就是访问南桥。另外要解释的是Substactive decode，在计算机中地址译码有三种形式，当主设备通过指定地址访问总线上的从设备，一个是Positive decode，有从设备解码后发现是访问自己的，于是它就会响应，否则就没有从设备响应；一个是Negative decode，从设备收到该地址经解码后发现不属于自己的地址范围，从设备就转发出去；一个是Subtractive decode，在4个时钟周期内没有从设备响应，该地址就会发送到扩展的总线上面解码。DMI Interface(Subtractive Decode)的意思就是CPU发送一地址先到北桥上解码，如果该地址没有北桥上的设备占用，那么就用该地址就会被传送到南桥上解码，，也就是访问南桥上的设备。可以假想为一开始4GB空间都是DMI Interface（Subtractive Decode），然后0-TOLUD被DRAM声明占用，TOLUD-4GB也纷纷被各种设备占用，于是就剩下了支离破碎的几个DMI Interface。(目前看上去这样理解是通顺的，但我希望它也是正确的)。  
   
-2. 再来说明一下High BIOS。BIOS固件地址分三段，这里的High BIOS，后面的System BIOS，还有后面的Extended System BIOS。spec中已经说明，计算机启动后一开始执行的指令就在High BIOS中。然而High BIOS在4GB的位置，计算机reset后进入的是实模式。Intel构架下一开始段地址隐藏的高位部分全部为1，所以尽管第一条指令的逻辑地址是F000:FFF0，但访问的物理地址是`FFFF_FFF0`，这第一条指令是一个远跳转指令，于是进入的真正的实模式（1MB以下的空间）。但是我觉得这不是关键的地方。关键的地方在于地址空间中640KB-1MB之间是可编程的，可以指定为只读、只写、读写、禁用，这些都是针对DRAM的。开机之后这段空间是被禁用的，而DRAM是北桥的设备，禁用DRAM，那么这段地址空间就是发送到南桥去解码（对照上面关于DMI Interface的说明来解释），结果就解码到了High BIOS对应的固件上面。所以终究还是在High BIOS中执行指令。可以用RW验证将`PAM0(PCI 0/0/0 90H)`的bit[5:4]设置为00，那么就发现， `0F0000-0FFFFF`之间的数据与`FFFF_0000-FFFF_FFFF`之间的数据竟然是一样的。也证明在DRAM禁用的情况下，两部分地址是被解码到同一个地方的。
+2.再来说明一下High BIOS。BIOS固件地址分三段，这里的High BIOS，后面的System BIOS，还有后面的Extended System BIOS。spec中已经说明，计算机启动后一开始执行的指令就在High BIOS中。然而High BIOS在4GB的位置，计算机reset后进入的是实模式。Intel构架下一开始段地址隐藏的高位部分全部为1，所以尽管第一条指令的逻辑地址是F000:FFF0，但访问的物理地址是`FFFF_FFF0`，这第一条指令是一个远跳转指令，于是进入的真正的实模式（1MB以下的空间）。但是我觉得这不是关键的地方。关键的地方在于地址空间中640KB-1MB之间是可编程的，可以指定为只读、只写、读写、禁用，这些都是针对DRAM的。开机之后这段空间是被禁用的，而DRAM是北桥的设备，禁用DRAM，那么这段地址空间就是发送到南桥去解码（对照上面关于DMI Interface的说明来解释），结果就解码到了High BIOS对应的固件上面。所以终究还是在High BIOS中执行指令。可以用RW验证将`PAM0(PCI 0/0/0 90H)`的bit[5:4]设置为00，那么就发现， `0F0000-0FFFFF`之间的数据与`FFFF_0000-FFFF_FFFF`之间的数据竟然是一样的。也证明在DRAM禁用的情况下，两部分地址是被解码到同一个地方的。  
 假如PAM0被设为只读或者读写，则读取的是DRAM上的信息，数据内容是System Bios。为什么System Bios明明在固件中却跑到DRAM中来呢？原因是这段固件被Shadow到DRAM上面了，也就是High BIOS执行一段时间后，DRAM也被初始化后，后面的BIOS程序进过一番周转到了DRAM中，这样做主要是由于DRAM访问速度会比南桥上的BIOS固件访问速度快。关于Shadow内存的一些说明可以参考百度百科：<http://baike.baidu.com/view/50443.htm>。  
 (同样的，目前来看上面的理解是通顺的，但我希望它也是正确的)。  
    
-3. 接着说一下PCI配置空间。可以看到它的基址是由PCIEXBAR决定的，用RW软件验证PCI数据可以用Memory的方式看到。各个PCI的地址空间可以用这个式子计算：`PCI Express Base Address + Bus Number x 1 MB +Device Number x 32 kB + Function Number x4 kB`。打一个比方，我的电脑的PCIEXBAR中看到基址为`E000_0000`，当我要访问`bus(0)device(1F)function(3)`时，通过计算可以得到地址为`E00F_B000`，于是从`PCI 0/1F/3`中看到的数据与从Memory的`E00F_B000`位置看到的数据是一样的。注意查看的时候要将PCIEXBAR的bit0置1。  
+3.接着说一下PCI配置空间。可以看到它的基址是由PCIEXBAR决定的，用RW软件验证PCI数据可以用Memory的方式看到。各个PCI的地址空间可以用这个式子计算：`PCI Express Base Address + Bus Number x 1 MB +Device Number x 32 kB + Function Number x4 kB`。打一个比方，我的电脑的PCIEXBAR中看到基址为`E000_0000`，当我要访问`bus(0)device(1F)function(3)`时，通过计算可以得到地址为`E00F_B000`，于是从`PCI 0/1F/3`中看到的数据与从Memory的`E00F_B000`位置看到的数据是一样的。注意查看的时候要将PCIEXBAR的bit0置1。  
   
-4. 要说明的大概就这些，其他的各种地址窗口的作用、地址空间的位置，都可以在spec中很轻易地找到。而且图中也标注了各个区间有关的寄存器。其实我只是综合一下而已，具体内容我也不懂啦，哈哈。  
+4.要说明的大概就这些，其他的各种地址窗口的作用、地址空间的位置，都可以在spec中很轻易地找到。而且图中也标注了各个区间有关的寄存器。其实我只是综合一下而已，具体内容我也不懂啦，哈哈。  
