@@ -18,11 +18,14 @@ public:
     CImageList m_ImageList;  
   
 public:  
-    void CToolBarCtrlEx::CreateEx(CWnd *pParentWnd,int numButton, /  
-UINT *res, UINT *str,CSize size=CSize(32,32),int pixel=ILC_COLOR24);  
-    //Res表示bitmap资源序列,str表示字符串资源序列,size表bitmap图像大小  
-         //pixel表示bitmap图像像素,如ILC_COLOR24,最终以str序列作各个按钮的ID  
-  
+    void CToolBarCtrlEx::CreateEx(
+            CWnd *pParentWnd,
+            int numButton,
+            UINT *res,  //res表示bitmap资源序列
+            UINT *str,  //str表示字符串资源序列,以它作为各个按钮的ID
+            CSize size=CSize(32,32), //size表bitmap图像大小
+            int pixel=ILC_COLOR24    //pixel表示bitmap图像像素,如ILC_COLOR24  
+    );
 };  
 ```  
 
@@ -30,7 +33,14 @@ UINT *res, UINT *str,CSize size=CSize(32,32),int pixel=ILC_COLOR24);
 #include "stdafx.h"  
 #include"CToolBarCtrlEx.h"  
   
-void CToolBarCtrlEx::CreateEx(CWnd *pParentWnd,int numButton, UINT *res, UINT *str,CSize size,int pixel)  
+void CToolBarCtrlEx::CreateEx(
+        CWnd *pParentWnd,
+        int numButton, 
+        UINT *res, 
+        UINT *str,
+        CSize size,
+        int pixel
+        )  
 {  
     //初始化ImageList  
     CBitmap bm;  
@@ -41,7 +51,11 @@ void CToolBarCtrlEx::CreateEx(CWnd *pParentWnd,int numButton, UINT *res, UINT *s
         bm.Detach();  
     }  
     //设置工具条  
-    Create(TBSTYLE_FLAT |CCS_TOP| WS_CHILD | WS_VISIBLE|WS_BORDER | CCS_ADJUSTABLE|CBRS_TOOLTIPS,CRect(0,0,0,0),pParentWnd,NULL);  
+    Create(TBSTYLE_FLAT |CCS_TOP| WS_CHILD | WS_VISIBLE|WS_BORDER | CCS_ADJUSTABLE|CBRS_TOOLTIPS,
+           CRect(0,0,0,0),
+           pParentWnd,
+           NULL
+           );  
     SetBitmapSize(size);  
     m_Tip.Create(pParentWnd);  
     TBBUTTON * Buttons=new TBBUTTON[numButton];  
@@ -71,14 +85,13 @@ void CToolBarCtrlEx::CreateEx(CWnd *pParentWnd,int numButton, UINT *res, UINT *s
     CWnd * pwndChild=pParentWnd->GetWindow(GW_CHILD);  
     CRect rcChild;  
     while(pwndChild){  
-        if(pwndChild==this)  
-            goto NEXT;  
-        pwndChild->GetWindowRect(&rcChild);  
-        pParentWnd->ScreenToClient(rcChild);    
-        rcChild.top+=toolRect.Height()+30;  
-        rcChild.bottom+=toolRect.Height()+30;  
-        pwndChild->MoveWindow(&rcChild,FALSE);  
-NEXT:  
+        if(pwndChild!=this){
+            pwndChild->GetWindowRect(&rcChild);  
+            pParentWnd->ScreenToClient(rcChild);    
+            rcChild.top+=toolRect.Height()+30;  
+            rcChild.bottom+=toolRect.Height()+30;  
+            pwndChild->MoveWindow(&rcChild,FALSE);  
+        }
         pwndChild=pwndChild->GetNextWindow();  
     }  
   
