@@ -5,7 +5,7 @@ date:   2010-11-09
 summary:
 categories:
 ---
-*(本文最初是2010-11-09发表于[BiosRen论坛](http://www.biosren.com/thread-3440-1-1.html)）*  
+*(本文最初是2010-11-09发表于[BiosRen论坛](http://www.biosren.com/thread-3200-1-1.html)）*  
 
 七月注册本论坛以来，从论坛里受益颇多。非常感谢biosren。本来没有什么技术是难学的，只是缺乏好的学习途径，biosren就是一条学习bios的良好途径。  
 
