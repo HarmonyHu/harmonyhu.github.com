@@ -20,8 +20,8 @@ categories:
 第三步，运行命令：build  -a IA32 -p Nt32pkg\nt32pkg.dsc。  
 第四步，启动模拟器命令build run。（自然以后运行模拟器的时候就不用第三步了，我很唠叨，呵呵）  
 
-看到的模拟器界面是如下：
-![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/uefiapp1.jpg)  
+看到的模拟器界面是如下：  
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/uefiapp1.JPG)  
 
 其中fsnt0对应的目录是D:\MyWorkspace\Build\NT32\DEBUG_MYTOOLS\IA32，fsnt1对应的目录是D:\MyWorkspace\EdkShellBinPkg\Bin\Ia32\Apps。
       
@@ -90,8 +90,8 @@ ShowTimeEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable)     {
 }
 ```  
 
-上面两个程序运行效果如下：
-![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/uefiapp2.jpg)  
+上面两个程序运行效果如下：  
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/uefiapp2.JPG)  
   
 下面再举一个例子，用来说明参数ImageHandle的作用，正如这个名字，它用来反映程序的在Image上面的信息。Handle本身是没有任何意义的，它的意义在于通过它可以访问到挂接在它下面的各种Protocol实例。而这个ImageHandle是调用者（比如说Shell)在调用这个程序之前，检索程序Image信息时创建的，并传入给这个程序作为入口参数。这个程序就可以通过这个ImageHandle访问到自己的Image相关信息。（Image相当于存储设备上的文件）。下面的例子是通过ImageHandle获得当前程序的Image路径（差不多也就是文件路径了）。  
 ```
@@ -123,8 +123,8 @@ TestEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable){
 }
 ```  
 
-上面程序运行效果图如下：
-![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/uefiapp3.jpg)  
+上面程序运行效果图如下：  
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/uefiapp3.JPG)  
 关于UEFI Application就说明到这里。
 
 附：  
