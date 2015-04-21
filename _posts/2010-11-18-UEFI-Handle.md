@@ -5,7 +5,8 @@ date:   2010-11-18
 summary:
 categories:
 ---
-*(本文最初是2010-11-18发表于[BiosRen论坛](http://www.biosren.com/thread-3440-1-1.html),现在挪到本人自己的域名博客)*  
+>本文最初是2010-11-18发表于[BiosRen论坛](http://www.biosren.com/thread-3440-1-1.html), 现在挪到本人自己的域名博客  
+
 本文说明：本人刚学习UEFI不久，写该文一是为了将学到的东西做一个规范化的总结，二是为了给初学UEFI的兄弟起到借鉴作用。同样地，错误的地方肯定很多，还望能得到各位弟兄指正。要理解本文，您至少应该是读过UEFI Spec，不然请先阅读UEFI Spec。  
 
 ##一、一些概念的理解  
