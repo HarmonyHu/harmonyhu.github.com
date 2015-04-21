@@ -46,11 +46,11 @@ hello.c程序如下：
 #include <efi.h>      
 EFI_STATUS   
 HelloEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable){
-      UINTN Index;
-      SystemTable->ConOut->OutputString(SystemTable->ConOut,L"Hello,World!\r\n");
-      SystemTable->ConOut->OutputString(SystemTable->ConOut,L"Press any key to continue...");
-      SystemTable->BootServices->WaitForEvent(1,&(SystemTable->ConIn->WaitForKey),&Index);
-      return EFI_SUCCESS; 
+    UINTN Index;
+    SystemTable->ConOut->OutputString(SystemTable->ConOut,L"Hello,World!\r\n");
+    SystemTable->ConOut->OutputString(SystemTable->ConOut,L"Press any key to continue...");
+    SystemTable->BootServices->WaitForEvent(1,&(SystemTable->ConIn->WaitForKey),&Index);
+    return EFI_SUCCESS; 
 }      
 ```
 
@@ -82,14 +82,15 @@ VS2008命令行模式下进入`D:\EFI_Toolkit_2.0\`目录，运行build之后，
 #include <efi.h>    
 #include <efilib.h>   
 EFI_STATUS     
-ShowTimeEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable)     {
-       EFI_TIME time;   
-      EFI_RUNTIME_SERVICES * mRT=SystemTable->RuntimeServices;      
-      InitializeLib(ImageHandle,SystemTable);    
-      mRT->GetTime(&time,NULL);   
-      Print(L"%04d-%02d-%02d %02d:%02d:%02d",   \ 
-               time.Year,time.Month,time.Day,time.Hour,time.Minute,time.Second);          
-       return EFI_SUCCESS;      
+ShowTimeEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable)
+{
+    EFI_TIME time;   
+    EFI_RUNTIME_SERVICES * mRT=SystemTable->RuntimeServices;      
+    InitializeLib(ImageHandle,SystemTable);    
+    mRT->GetTime(&time,NULL);   
+    Print(L"%04d-%02d-%02d %02d:%02d:%02d",   \
+          time.Year,time.Month,time.Day,time.Hour,time.Minute,time.Second);          
+    return EFI_SUCCESS;      
 }
 ```  
 
@@ -110,20 +111,20 @@ TestEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable){
     InitializeLib(ImageHandle,SystemTable);   
     Status = BS->HandleProtocol (ImageHandle,&LoadedImageProtocol,&LoadedImage);  
     if(EFI_ERROR(Status)){  
-           Print(L"Error Occur!");  
-           return EFI_SUCCESS;  
-      }  
-     Status = BS->HandleProtocol (LoadedImage->DeviceHandle,&DevicePathProtocol,&DevicePath);  
+        Print(L"Error Occur!");  
+        return EFI_SUCCESS;  
+    }  
+    Status = BS->HandleProtocol (LoadedImage->DeviceHandle,&DevicePathProtocol,&DevicePath);  
     if(EFI_ERROR(Status)){  
-         Print(L"Error Occur!");  
-         return EFI_SUCCESS;  
-     }  
-     DevicePathAsString = DevicePathToStr(LoadedImage->FilePath);  
-     if (DevicePathAsString != NULL) {   
-             Print (L"Image file : %s\n", DevicePathAsString);   
-             FreePool(DevicePathAsString);   
-      }   
-      return EFI_SUCCESS;   
+        Print(L"Error Occur!");  
+        return EFI_SUCCESS;  
+    }  
+    DevicePathAsString = DevicePathToStr(LoadedImage->FilePath);  
+    if (DevicePathAsString != NULL) {
+        Print (L"Image file : %s\n", DevicePathAsString);   
+        FreePool(DevicePathAsString);   
+    }   
+    return EFI_SUCCESS;   
 }
 ```  
 
