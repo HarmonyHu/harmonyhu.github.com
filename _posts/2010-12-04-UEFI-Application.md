@@ -40,8 +40,9 @@ categories:
 
 在`EFI_Toolkit_2.0\apps`下面建立目录hello，并在该目录下新建hello.c和hello.mak。  
 
-hello.c程序如下：
-```
+hello.c程序如下：  
+
+```cpp
 #include <efi.h>      
 EFI_STATUS   
 HelloEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable){
@@ -54,7 +55,8 @@ HelloEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable){
 ```
 
 hello.mak如下(除了红色字体部分，其余可以作为模板来理解)：  
-```
+
+```cpp
 !include $(SDK_INSTALL_DIR)\build\$(SDK_BUILD_ENV)\sdk.env   
 BASE_NAME= hello  
 IMAGE_ENTRY_POINT = HelloEntry   
@@ -73,8 +75,9 @@ $(BUILD_DIR)\$(BASE_NAME).obj : $(*B).c $(INC_DEPS)
 
 VS2008命令行模式下进入`D:\EFI_Toolkit_2.0\`目录，运行build之后，进入`apps\hello`目录，执行命令`nmake –f hello.mak`。这样`hello.efi`就生成在指定目录了。  
 
-再举个使用了efilib的例子（makefile文件模仿上面写）：  
-```
+再举个使用了efilib的例子(makefile文件模仿上面写):  
+
+```cpp
 //ShowTime.c   
 #include <efi.h>    
 #include <efilib.h>   
@@ -94,7 +97,8 @@ ShowTimeEntry(IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *SystemTable)     {
 ![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/uefiapp2.JPG)  
   
 下面再举一个例子，用来说明参数ImageHandle的作用，正如这个名字，它用来反映程序的在Image上面的信息。Handle本身是没有任何意义的，它的意义在于通过它可以访问到挂接在它下面的各种Protocol实例。而这个ImageHandle是调用者（比如说Shell)在调用这个程序之前，检索程序Image信息时创建的，并传入给这个程序作为入口参数。这个程序就可以通过这个ImageHandle访问到自己的Image相关信息。（Image相当于存储设备上的文件）。下面的例子是通过ImageHandle获得当前程序的Image路径（差不多也就是文件路径了）。  
-```
+
+```cpp
 #include <efi.h>      
 #include <efilib.h>     
 EFI_STATUS     
