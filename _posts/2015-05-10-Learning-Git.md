@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Git学习整理
-date:   2015-06-10
+date:   2015-05-10
 summary:
 categories:
 ---
