@@ -10,8 +10,8 @@
       <span class="pagination-item disabled">上一页</span>
     {% endif %}
   </div>
-  <div class="middle">
-    <span>页码 {{ paginator.page }} / {{ paginator.total_pages }}</span>
+  <div class="center">
+    <a>页码 {{ paginator.page }} / {{ paginator.total_pages }}</a>
   </div>
   <div class="right">
     {% if paginator.next_page %}
