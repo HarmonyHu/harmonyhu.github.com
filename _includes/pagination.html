@@ -11,7 +11,7 @@
     {% endif %}
   </div>
   <div class="center">
-    <a>页码 {{ paginator.page }} / {{ paginator.total_pages }}</a>
+    <span class="pagination-item disabled">页码 {{ paginator.page }} / {{ paginator.total_pages }}</span>
   </div>
   <div class="right">
     {% if paginator.next_page %}
