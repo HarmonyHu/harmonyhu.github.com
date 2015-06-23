@@ -21,7 +21,7 @@ categories:
 - `git add .` 标记当前目前所有文件，包括子目录文件  
 - `git add *`=`git add .`=`git add -A`  
 `git status`：查看工作目录状态  
-`git rm --cached <filename>`：取消标记 
+`git rm --cached <filename>`：取消标记  
 `git commit -m "注释"`：将标记文件的修改提交到本地仓库  
 - `git commit -a -m "注释"`：将所有管理文件的修改提交到本地仓库  
 
@@ -40,7 +40,7 @@ categories:
 ######分支及历史版本操作  
 
 `git branch`：查看当前本地分支  
-- `git branch local`：本地创建local分支
+- `git branch local`：本地创建local分支  
 `git checkout local`：切换到local分支  
 - `git checkout file_name`：放弃file_name的修改  
 `git merge local`：当前分支合并local分支的修改  
