@@ -30,9 +30,10 @@ paypal_url:
 flattr_button:
 
 # Build settings
-markdown:     redcarpet
+highlighter: pygments
+markdown: redcarpet
 redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "strikethrough", "superscript", "with_toc_data"]
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
 permalink:    pretty
 paginate:     8
 sass:
