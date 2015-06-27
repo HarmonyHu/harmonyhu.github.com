@@ -6,7 +6,7 @@ summary:
 categories:
 ---
 
-![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/wind.JPG)   
+![](https://github.com/HarmonyHu/harmonyhu.github.io/raw/master/_posts/images/wind.jpg)   
 
 有时我遇到困境不知道怎么办，比如要面对自身缺陷的时候，比如被人背后诋毁的时候，比如辜负某人的时候。我觉得这是生命给我出的众多难题中的一道，我知道有人可以告诉我该怎么做，也有书本会写那些主人公们怎么做。但是我觉得我更应该根据自己的处境，自己去解决这些问题。我不可能一辈子靠书本，靠别人教来活着。自悟才能得救。但是我又感觉自己真的没有那样自悟的智慧。我不知道如何办，就好像血液已经被堵塞，如果还不疏通血液的话，大脑必然枯竭而死。  
 
