@@ -72,20 +72,20 @@ reg = %r(http://) *#同上，不需要转义*
 
 2. **匹配**  
 `=~ 如果匹配，返回匹配位置，否则返回nil`  
-如：">>http://www.baidu.com" =~ reg *#返回2*  
-如：">>www.baidu.com" =~ reg *#返回nil*  
+如：`">>http://www.baidu.com" =~ reg` *#返回2*  
+如：`">>www.baidu.com" =~ reg` *#返回nil*  
 `!~ 如果匹配，返回false，否则返回true`  
-如：">>http://www.baidu.com" !~ reg *#返回false*  
-如：">>www.baidu.com" =~ reg *#返回true*  
+如：`">>http://www.baidu.com" !~ reg` *#返回false*  
+如：`">>www.baidu.com" =~ reg` *#返回true*  
 `字符串.match(regex) 返回匹配的字符串;否则nil`  
-如：">>http://www.baidu.com".match(reg) *#返回http://*  
-如：">>www.baidu.com".match(reg) *#返回nil*  
+如：`">>http://www.baidu.com".match(reg)` *#返回http://*  
+如：`">>www.baidu.com".match(reg)` *#返回nil*  
 `字符串.scan(regex) 返回所有匹配字符串以数组保存`  
-如："I love my home".scan(/\w*o\w*/) *#返回["love","home"]*  
-如："I love my home".scan(/family/) *#返回[]*  
+如：`"I love my home".scan(/\w*o\w*/)` *#返回["love","home"]*  
+如：`"I love my home".scan(/family/)` *#返回[]*  
 
 3. **替换**  
 `字符串.sub(regex) 替换第一个匹配`  
-如："I love my home".sub(/home/,"family") *#返回I love my family*  
+如：`"I love my home".sub(/home/,"family")` *#返回I love my family*  
 `字符串.gsub(regex) 替换所有匹配`  
-如："I love my home".gsub(/\b\w/,"I") *#返回I Iove Iy Iome*  
+如：`"I love my home".gsub(/\b\w/,"I")` *#返回I Iove Iy Iome*  
